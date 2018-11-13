@@ -28,5 +28,8 @@
             "Jubjubbird\\": "src/Jubjubbird",
             "Buttercup\\": ["src/Buttercup", "tests/Buttercup"]
         }
+    },
+    "require-dev": {
+        "phpspec/phpspec": "5.1.0"
     }
 }

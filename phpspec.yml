@@ -1,0 +1,7 @@
+formatter.name: pretty
+#composer_suite_detection: true
+suites:
+  takes_off:
+    namespace: Jubjubbird\TakesOff\
+    psr4_prefix: Jubjubbird\TakesOff\
+    src_path: src/Jubjubbird/TakesOff
