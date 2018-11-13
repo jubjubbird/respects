@@ -22,6 +22,11 @@ trait RecordsEventsForBusinessMethods
     }
 
     /**
+     * @return IdentifiesAggregate
+     */
+    abstract public function getAggregateId(): IdentifiesAggregate;
+
+    /**
      * Get all the Domain Events that were recorded since the last time it was cleared, or since it was
      * restored from persistence. This does not include events that were recorded prior.
      * @return DomainEvents
@@ -31,11 +36,6 @@ trait RecordsEventsForBusinessMethods
     {
         return new DomainEvents($this->recordedEvents);
     }
-
-    /**
-     * @return IdentifiesAggregate
-     */
-    abstract public function getAggregateId(): IdentifiesAggregate;
 
     /**
      * The trait ApplyCallWhenMethod may be used instead of implementing this method.
