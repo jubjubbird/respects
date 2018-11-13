@@ -4,10 +4,15 @@
 // `RecordsEvents` interface.
 namespace Buttercup\Protects\Tests;
 
-use Buttercup\Protects\DomainEvent;
-use Buttercup\Protects\DomainEvents;
 use Buttercup\Protects\RecordsEvents;
 use Buttercup\Protects\Tests\Misc\ProductId;
+use DateTimeImmutable;
+use DateTimeZone;
+use Exception;
+use Jubjubbird\Respects\DomainEvent;
+use Jubjubbird\Respects\DomainEvents;
+use Jubjubbird\Respects\RecordedEvent;
+use Jubjubbird\Respects\Serializable;
 
 // Being good TDD'ers, let's write our tests first.
 $test = function() {
@@ -21,11 +26,11 @@ $test = function() {
     it("should have recorded 3 events",
         3 == count($events));
     it("should have a BasketWasPickedUp event",
-        $events[0] instanceof BasketWasPickedUp);
+        $events[0]->getPayload() instanceof BasketWasPickedUp);
     it("should have a ProductWasAddedToBasket event",
-        $events[1] instanceof ProductWasAddedToBasket);
+        $events[1]->getPayload() instanceof ProductWasAddedToBasket);
     it("should have a ProductWasRemovedFromBasket event",
-        $events[2] instanceof ProductWasRemovedFromBasket);
+        $events[2]->getPayload() instanceof ProductWasRemovedFromBasket);
 
     // We'll want a way to clear the events, so that the next time we call a method on Basket, we don't get a list with
     // old and new events mixed in the same result.
@@ -82,9 +87,16 @@ final class Basket implements RecordsEvents
     // the `RecordsEvents` interface. As with pretty much everything in Buttercup.Protects, you can **choose for yourself
     // how you do this and where you put this**. For example, this method and the ones below, could be part of a trait or
     // an abstract parent somewhere.
-    private function recordThat(DomainEvent $domainEvent)
+    private function recordThat(Serializable $domainEvent)
     {
-        $this->latestRecordedEvents[] = $domainEvent;
+        $now = null;
+        try {
+            $now = new DateTimeImmutable('now', new DateTimeZone('UTC'));
+        } catch (Exception $e) {
+            // cannot happen
+        }
+        $recordedEvent = new RecordedEvent($domainEvent, $this->basketId, $now);
+        $this->latestRecordedEvents[] = $recordedEvent;
     }
 
     // We only keep a list of newly recorded events since the last `clearRecordedEvents()`. If we wanted to, we could

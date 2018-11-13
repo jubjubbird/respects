@@ -15,5 +15,6 @@ require_once __DIR__ . '/tests/Buttercup/Protects/Tests/05-ProtectsMoreInvariant
 require_once __DIR__ . '/tests/Buttercup/Protects/Tests/06-IsEventSourced.php';
 require_once __DIR__ . '/tests/Buttercup/Protects/Tests/07-EventStore.php';
 require_once __DIR__ . '/tests/Buttercup/Protects/Tests/08-AggregateRepository.php';
+require_once __DIR__ . '/tests/Buttercup/Protects/Tests/09-UsesTraits.php';
 
 done();

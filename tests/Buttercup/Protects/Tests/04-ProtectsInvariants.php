@@ -7,11 +7,14 @@
 // a particular domain anyway.
 namespace Buttercup\Protects\Tests;
 
-use Buttercup\Protects\DomainEvent;
-use Buttercup\Protects\DomainEvents;
 use Buttercup\Protects\RecordsEvents;
 use Buttercup\Protects\Tests\Misc\ProductId;
+use DateTimeImmutable;
+use DateTimeZone;
 use Exception;
+use Jubjubbird\Respects\DomainEvents;
+use Jubjubbird\Respects\RecordedEvent;
+use Jubjubbird\Respects\Serializable;
 
 // As an example, let's introduce an invariant that states that *"A Basket can have no more than three Products"*.
 // Let's write a test that proves that the a `BasketLimitReached` exception is thrown when we try to violate the invariant.
@@ -76,7 +79,16 @@ final class BasketV2 implements RecordsEvents
     private $basketId;
     private $latestRecordedEvents = [];
     private function __construct(BasketId $basketId) { $this->basketId = $basketId; }
-    private function recordThat(DomainEvent $domainEvent) { $this->latestRecordedEvents[] = $domainEvent; }
+    private function recordThat(Serializable $domainEvent) {
+        $now = null;
+        try {
+            $now = new DateTimeImmutable('now', new DateTimeZone('UTC'));
+        } catch (Exception $e) {
+            // cannot happen
+        }
+        $recordedEvent = new RecordedEvent($domainEvent, $this->basketId, $now);
+        $this->latestRecordedEvents[] = $recordedEvent;
+    }
     public function getRecordedEvents() { return new DomainEvents($this->latestRecordedEvents); }
     public function clearRecordedEvents() { $this->latestRecordedEvents = []; }
 }

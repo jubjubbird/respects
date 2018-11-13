@@ -1,10 +1,11 @@
-<?php
+<?php declare(strict_types=1);
 
-namespace Buttercup\Protects;
+namespace Jubjubbird\Respects;
 
+use Buttercup\Protects\IdentifiesAggregate;
 use Exception;
 
-final class AggregateHistory extends DomainEvents
+class AggregateHistory extends DomainEvents
 {
     /**
      * @var IdentifiesAggregate
@@ -21,8 +22,8 @@ final class AggregateHistory extends DomainEvents
     public function __construct(IdentifiesAggregate $aggregateId, array $events)
     {
         /** @var $event DomainEvent */
-        foreach($events as $event) {
-            if(!$event->getAggregateId()->equals($aggregateId)) {
+        foreach ($events as $event) {
+            if (!$event->getAggregateId()->equals($aggregateId)) {
                 throw new CorruptAggregateHistory;
             }
         }
@@ -36,14 +37,5 @@ final class AggregateHistory extends DomainEvents
     public function getAggregateId()
     {
         return $this->aggregateId;
-    }
-
-    /**
-     * @param DomainEvent $domainEvent
-     * @return AggregateHistory
-     */
-    public function append(DomainEvent $domainEvent)
-    {
-        throw new \Exception("@todo  Implement append() method.");
     }
 }

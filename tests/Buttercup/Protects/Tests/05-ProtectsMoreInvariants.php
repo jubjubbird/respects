@@ -7,10 +7,14 @@
 // - Nothing happens at all. This is a perfectly legal outcome. We'll work through a simple example.
 namespace Buttercup\Protects\Tests;
 
-use Buttercup\Protects\DomainEvent;
-use Buttercup\Protects\DomainEvents;
 use Buttercup\Protects\RecordsEvents;
 use Buttercup\Protects\Tests\Misc\ProductId;
+use DateTimeImmutable;
+use DateTimeZone;
+use Exception;
+use Jubjubbird\Respects\DomainEvents;
+use Jubjubbird\Respects\RecordedEvent;
+use Jubjubbird\Respects\Serializable;
 
 // If we have a Basket with one Product, and we try to remove this Product twice, we could throw an exception. But
 // in fact, that would not be necessary in this case. We could simply ignore the second attempt. After all, the
@@ -94,7 +98,16 @@ final class BasketV3 implements RecordsEvents
     private function guardProductLimit() { if ($this->productCount >= 3) { throw new BasketLimitReached; } }
     public static function pickUp(BasketId $basketId) { $basket = new BasketV3($basketId); $basket->recordThat( new BasketWasPickedUp($basketId) ); $basket->productCount = 0; $basket->products = []; return $basket; }
     private function __construct(BasketId $basketId) { $this->basketId = $basketId; }
-    private function recordThat(DomainEvent $domainEvent) { $this->latestRecordedEvents[] = $domainEvent; }
+    private function recordThat(Serializable $domainEvent) {
+        $now = null;
+        try {
+            $now = new DateTimeImmutable('now', new DateTimeZone('UTC'));
+        } catch (Exception $e) {
+            // cannot happen
+        }
+        $recordedEvent = new RecordedEvent($domainEvent, $this->basketId, $now);
+        $this->latestRecordedEvents[] = $recordedEvent;
+    }
     public function getRecordedEvents() { return new DomainEvents($this->latestRecordedEvents); }
     public function clearRecordedEvents() { $this->latestRecordedEvents = []; }
 }

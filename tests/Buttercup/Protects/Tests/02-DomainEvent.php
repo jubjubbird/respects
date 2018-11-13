@@ -4,13 +4,14 @@
 // **Event Sourced** system, they are the most important elements. So work closely with your **Domain Expert** to figure
 // out what is and is not important to the business.
 namespace Buttercup\Protects\Tests;
-use Buttercup\Protects\DomainEvent;
+
 use Buttercup\Protects\Tests\Misc\ProductId;
+use Jubjubbird\Respects\Serializable;
 
 // For the sake of the example, we imagine a simple e-commerce system. We're very interested in what people put in their
 // shopping basket, and what they take out. Because every shopping session starts with a new basket, we're interested in
 // that event as well.
-final class BasketWasPickedUp implements DomainEvent
+final class BasketWasPickedUp implements Serializable
 {
     private $basketId;
 
@@ -19,9 +20,26 @@ final class BasketWasPickedUp implements DomainEvent
         $this->basketId = $basketId;
     }
 
+    /**
+     * @param array $data
+     * @return static The object instance
+     */
+    static function deserialize(array $data)
+    {
+        return new self(BasketId::fromString($data[0]));
+    }
+
     public function getAggregateId()
     {
         return $this->basketId;
+    }
+
+    /**
+     * @return array
+     */
+    function serialize(): array
+    {
+        return [strval($this->basketId)];
     }
 }
 
@@ -31,7 +49,7 @@ final class BasketWasPickedUp implements DomainEvent
 // `BasketPickedUp`, without the 'was', would've worked as well. I prefer to make sentences though.
 // - We implement `DomainEvent`.
 // - The `getAggregateId()` method returns `IdentifiesAggregate`. We'll get to **Aggregates** soon.
-final class ProductWasAddedToBasket implements DomainEvent
+final class ProductWasAddedToBasket implements Serializable
 {
     private $basketId;
     private $productId;
@@ -62,11 +80,28 @@ final class ProductWasAddedToBasket implements DomainEvent
     {
         return $this->productName;
     }
+
+    /**
+     * @param array $data
+     * @return static The object instance
+     */
+    static function deserialize(array $data)
+    {
+        return new self(BasketId::fromString($data[0]), ProductId::fromString($data[1]), $data[2]);
+    }
+
+    /**
+     * @return array
+     */
+    function serialize(): array
+    {
+        return [strval($this->basketId), strval($this->productId), $this->productName];
+    }
 }
 
 // Notice that Domain Events are **immutable**. Once they have been initialized, there's no way to change them, there
 // are No setters. That makes perfect sense: History can't be altered!
-final class ProductWasRemovedFromBasket implements DomainEvent
+final class ProductWasRemovedFromBasket implements Serializable
 {
     private $basketId;
     private $productId;
@@ -77,6 +112,15 @@ final class ProductWasRemovedFromBasket implements DomainEvent
         $this->productId = $productId;
     }
 
+    /**
+     * @param array $data
+     * @return static The object instance
+     */
+    static function deserialize(array $data)
+    {
+        return new self(BasketId::fromString($data[0]), ProductId::fromString($data[1]));
+    }
+
     public function getAggregateId()
     {
         return $this->basketId;
@@ -85,6 +129,14 @@ final class ProductWasRemovedFromBasket implements DomainEvent
     public function getProductId()
     {
         return $this->productId;
+    }
+
+    /**
+     * @return array
+     */
+    function serialize(): array
+    {
+        return [strval($this->basketId), strval($this->productId)];
     }
 }
 

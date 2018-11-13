@@ -1,5 +1,5 @@
 {
-    "name": "buttercup/protects",
+    "name": "jubjubbird/respects",
     "description": "Buttercup.Protects is a PHP library for building Aggregates that protect business rules, and that announce Domain Events.",
     "minimum-stability": "dev",
     "license": "MIT",
@@ -19,12 +19,17 @@
         "source": "https://github.com/buttercup-php/protects",
         "issues": "https://github.com/buttercup-php/protects/issues"
     },
-    "require-dev": {
+    "require": {
+        "ramsey/uuid": "^3.8",
         "mathiasverraes/classfunctions": "1.*"
     },
     "autoload": {
         "psr-4": {
+            "Jubjubbird\\": "src/Jubjubbird",
             "Buttercup\\": ["src/Buttercup", "tests/Buttercup"]
         }
+    },
+    "require-dev": {
+        "phpspec/phpspec": "5.1.0"
     }
 }
