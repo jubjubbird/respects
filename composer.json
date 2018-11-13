@@ -1,5 +1,5 @@
 {
-    "name": "buttercup/protects",
+    "name": "jubjubbird/respects",
     "description": "Buttercup.Protects is a PHP library for building Aggregates that protect business rules, and that announce Domain Events.",
     "minimum-stability": "dev",
     "license": "MIT",
@@ -25,6 +25,7 @@
     },
     "autoload": {
         "psr-4": {
+            "Jubjubbird\\": "src/Jubjubbird",
             "Buttercup\\": ["src/Buttercup", "tests/Buttercup"]
         }
     }

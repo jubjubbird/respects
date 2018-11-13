@@ -7,12 +7,17 @@
 namespace Buttercup\Protects\Tests;
 
 use Buttercup\Protects\AggregateHistory;
-use Buttercup\Protects\DomainEvent;
 use Buttercup\Protects\DomainEvents;
+use Buttercup\Protects\IdentifiesAggregate;
 use Buttercup\Protects\IsEventSourced;
 use Buttercup\Protects\RecordsEvents;
 use Buttercup\Protects\Tests\Misc\ProductId;
-use Buttercup\Protects\Tests\Misc\When;
+use DateTimeImmutable;
+use DateTimeZone;
+use Exception;
+use Jubjubbird\Respects\RecordedEvent;
+use Jubjubbird\Respects\Serializable;
+use function Verraes\ClassFunctions\short;
 
 $test = function() {
     $basketId = BasketId::generate();
@@ -36,8 +41,6 @@ $test = function() {
 // We declare that `Basket` `IsEventSourced`, in other words, that we can rebuild it from it's events.
 final class BasketV4 implements RecordsEvents, IsEventSourced
 {
-    use When;
-
     // The `IsEventSourced` interface requires us to implement a `reconstituteFrom(AggregateHistory)` static method.
     // This method is like an alternative constructor. Recall that we had `pickUp()` earlier, which was the constructor
     // for calling the Basket into life. `Reconstitute` implies that this Basket already exists conceptually, but that
@@ -62,7 +65,7 @@ final class BasketV4 implements RecordsEvents, IsEventSourced
             // events to be recorded a second time.
 
             // The trick is to separate the logic that applies events to the state. We'll call a new private method:
-            $basket->when($event);
+            $basket->apply($event);
         }
 
         // Finally we return the newly reconstituted Basket.
@@ -122,12 +125,36 @@ final class BasketV4 implements RecordsEvents, IsEventSourced
         // And this code moved to `whenProductWasRemovedFromBasket()`.
     }
 
-    private function recordThat(DomainEvent $domainEvent)
+    /**
+     * @return IdentifiesAggregate
+     */
+    public function getAggregateId()
     {
-        $this->latestRecordedEvents[] = $domainEvent;
-        // Finally, we make sure that newly recorded events are still being applied to the state.
-        // when($domainEvent) delegates to whenDomainEvent($domainEvent)
-        $this->when($domainEvent);
+        return $this->basketId;
+    }
+
+    /**
+     * Delegate the application of the event to the appropriate when... method, e. g. a VisitorHasLeft event will be
+     * processed by the (private) method whenVisitorHasLeft(VisitorHasLeft $event): void
+     * @param RecordedEvent $event
+     */
+    protected function apply(RecordedEvent $event): void
+    {
+        $method = 'when' . short($event->getPayload());
+        $this->$method($event->getPayload(), $event);
+    }
+
+    private function recordThat(Serializable $domainEvent)
+    {
+        $now = null;
+        try {
+            $now = new DateTimeImmutable('now', new DateTimeZone('UTC'));
+        } catch (Exception $e) {
+            // cannot happen
+        }
+        $recordedEvent = new RecordedEvent($domainEvent, $this->basketId, $now);
+        $this->latestRecordedEvents[] = $recordedEvent;
+        $this->apply($recordedEvent);
     }
 
     // no changes here
