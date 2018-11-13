@@ -3,11 +3,16 @@ namespace Buttercup\Protects;
 
 use ArrayAccess;
 use Countable;
+use InvalidArgumentException;
 use Iterator;
 use SplFixedArray;
 
 abstract class ImmutableArray extends SplFixedArray implements Countable, Iterator, ArrayAccess
 {
+    /**
+     * @param array $items
+     * @throws InvalidArgumentException when the type of one of the items is not allowed by the collection.
+     */
     public function __construct(array $items)
     {
         parent::__construct(count($items));
@@ -20,7 +25,7 @@ abstract class ImmutableArray extends SplFixedArray implements Countable, Iterat
 
     /**
      * Throw when the item is not an instance of the accepted type.
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      * @param $item
      * @return void
      */
@@ -66,11 +71,20 @@ abstract class ImmutableArray extends SplFixedArray implements Countable, Iterat
         return parent::offsetGet($offset);
     }
 
+    /**
+     * @param int|mixed $offset
+     * @param mixed $value
+     * @throws ArrayIsImmutable whenever an attempt is made to overwrite a value in this collection.
+     */
     final public function offsetSet($offset, $value)
     {
         throw new ArrayIsImmutable();
     }
 
+    /**
+     * @param int|mixed $offset
+     * @throws ArrayIsImmutable whenever an attempt is made to overwrite a value in this collection.
+     */
     final public function offsetUnset($offset)
     {
         throw new ArrayIsImmutable();

@@ -2,7 +2,7 @@
 
 namespace Buttercup\Protects;
 
-use Buttercup\Protects\IdentifiesAggregate;
+use Exception;
 
 final class AggregateHistory extends DomainEvents
 {
@@ -11,6 +11,13 @@ final class AggregateHistory extends DomainEvents
      */
     private $aggregateId;
 
+    /**
+     * AggregateHistory constructor.
+     * @param IdentifiesAggregate $aggregateId
+     * @param array $events
+     * @throws CorruptAggregateHistory
+     * @throws Exception when one of the events is not a DomainEvent.
+     */
     public function __construct(IdentifiesAggregate $aggregateId, array $events)
     {
         /** @var $event DomainEvent */
