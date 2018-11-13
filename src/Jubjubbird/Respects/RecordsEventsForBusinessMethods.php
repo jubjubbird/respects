@@ -35,16 +35,16 @@ trait RecordsEventsForBusinessMethods
     }
 
     /**
+     * @return IdentifiesAggregate
+     */
+    abstract public function getAggregateId(): IdentifiesAggregate;
+
+    /**
      * The trait ApplyCallWhenMethod may be used instead of implementing this method.
      * @param RecordedEvent $event
      * @return mixed
      */
     abstract protected function apply(RecordedEvent $event);
-
-    /**
-     * @return IdentifiesAggregate
-     */
-    abstract protected function getAggregateId(): IdentifiesAggregate;
 
     /**
      * Records the first occurrence of this event from the method that caused it.
