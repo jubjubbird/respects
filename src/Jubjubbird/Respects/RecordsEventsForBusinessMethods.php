@@ -2,8 +2,6 @@
 
 namespace Jubjubbird\Respects;
 
-use Buttercup\Protects\DomainEvent;
-use Buttercup\Protects\DomainEvents;
 use Buttercup\Protects\IdentifiesAggregate;
 use DateTimeImmutable;
 use DateTimeZone;
