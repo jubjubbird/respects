@@ -4,10 +4,10 @@
 // `getAggregateHistoryFor($id)` method.
 namespace Buttercup\Protects\Tests;
 
-use Buttercup\Protects\AggregateHistory;
-use Buttercup\Protects\DomainEvent;
-use Buttercup\Protects\DomainEvents;
 use Buttercup\Protects\IdentifiesAggregate;
+use Jubjubbird\Respects\AggregateHistory;
+use Jubjubbird\Respects\DomainEvent;
+use Jubjubbird\Respects\DomainEvents;
 
 interface EventStore
 {

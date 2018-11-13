@@ -6,15 +6,15 @@
 // of elements that make up the Aggregate.
 namespace Buttercup\Protects\Tests;
 
-use Buttercup\Protects\AggregateHistory;
-use Buttercup\Protects\DomainEvents;
 use Buttercup\Protects\IdentifiesAggregate;
-use Buttercup\Protects\IsEventSourced;
 use Buttercup\Protects\RecordsEvents;
 use Buttercup\Protects\Tests\Misc\ProductId;
 use DateTimeImmutable;
 use DateTimeZone;
 use Exception;
+use Jubjubbird\Respects\AggregateHistory;
+use Jubjubbird\Respects\DomainEvents;
+use Jubjubbird\Respects\IsEventSourced;
 use Jubjubbird\Respects\RecordedEvent;
 use Jubjubbird\Respects\Serializable;
 use function Verraes\ClassFunctions\short;

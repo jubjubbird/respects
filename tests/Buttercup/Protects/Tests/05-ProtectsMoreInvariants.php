@@ -7,13 +7,12 @@
 // - Nothing happens at all. This is a perfectly legal outcome. We'll work through a simple example.
 namespace Buttercup\Protects\Tests;
 
-use Buttercup\Protects\DomainEvent;
-use Buttercup\Protects\DomainEvents;
 use Buttercup\Protects\RecordsEvents;
 use Buttercup\Protects\Tests\Misc\ProductId;
 use DateTimeImmutable;
 use DateTimeZone;
 use Exception;
+use Jubjubbird\Respects\DomainEvents;
 use Jubjubbird\Respects\RecordedEvent;
 use Jubjubbird\Respects\Serializable;
 

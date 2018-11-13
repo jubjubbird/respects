@@ -2,9 +2,9 @@
 
 namespace Buttercup\Protects\Tests;
 
-use Buttercup\Protects\AggregateHistory;
-use Buttercup\Protects\AggregateRoot;
 use Buttercup\Protects\IdentifiesAggregate;
+use Jubjubbird\Respects\AggregateHistory;
+use Jubjubbird\Respects\AggregateRoot;
 use Jubjubbird\Respects\ApplyCallsWhenMethod;
 use Jubjubbird\Respects\RecordsEventsForBusinessMethods;
 
