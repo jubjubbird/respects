@@ -3,7 +3,7 @@
 namespace Buttercup\Protects;
 
 /**
- * A collection-oriented Repository for eventsourced Aggregates.
+ * A collection-oriented Repository for event-sourced Aggregates.
  */
 interface AggregateRepository
 {
