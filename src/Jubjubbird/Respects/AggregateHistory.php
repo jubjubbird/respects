@@ -15,19 +15,19 @@ class AggregateHistory extends DomainEvents
     /**
      * AggregateHistory constructor.
      * @param IdentifiesAggregate $aggregateId
-     * @param array $events
+     * @param DomainEvent[] $domainEvents
      * @throws CorruptAggregateHistory
      * @throws Exception when one of the events is not a DomainEvent.
      */
-    public function __construct(IdentifiesAggregate $aggregateId, array $events)
+    public function __construct(IdentifiesAggregate $aggregateId, array $domainEvents)
     {
         /** @var $event DomainEvent */
-        foreach ($events as $event) {
+        foreach ($domainEvents as $event) {
             if (!$event->getAggregateId()->equals($aggregateId)) {
                 throw new CorruptAggregateHistory;
             }
         }
-        parent::__construct($events);
+        parent::__construct($domainEvents);
         $this->aggregateId = $aggregateId;
     }
 
