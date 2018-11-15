@@ -17,24 +17,24 @@ class BasketSpec extends ObjectBehavior
         $this->shouldHaveType(Basket::class);
     }
 
-    function it_reconstitutes_from_an_aggregate_history(AggregateHistory $aggregateHistory)
+    function it_reconstitutes_from_an_aggregate_history()
     {
         $basketId = BasketId::generate();
-        $aggregateHistory->beConstructedWith([
+        $aggregateHistory = new AggregateHistory(
             $basketId,
             [
                 new RecordedEvent(new BasketWasPickedUp($basketId), $basketId, new DateTimeImmutable())
             ]
-        ]);
+        );
         $this->beConstructedThroughReconstituteFrom($aggregateHistory);
         $this->getRecordedEvents()->shouldHaveCount(0);
         $this->pickedUp->shouldBe(true);
     }
 
-    function it_reconstitutes_to_an_invalid_state_with_an_empty_aggregate_history(AggregateHistory $aggregateHistory)
+    function it_reconstitutes_to_an_invalid_state_with_an_empty_aggregate_history()
     {
         $basketId = BasketId::generate();
-        $aggregateHistory->beConstructedWith([$basketId, []]);
+        $aggregateHistory = new AggregateHistory($basketId, []);
         $this->beConstructedThroughReconstituteFrom($aggregateHistory);
         $this->getRecordedEvents()->shouldHaveCount(0);
         $this->pickedUp->shouldBe(false);
