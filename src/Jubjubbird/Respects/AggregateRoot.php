@@ -2,8 +2,6 @@
 
 namespace Jubjubbird\Respects;
 
-use Buttercup\Protects\RecordsEvents;
-
 interface AggregateRoot extends RecordsEvents, IsEventSourced
 {
 }

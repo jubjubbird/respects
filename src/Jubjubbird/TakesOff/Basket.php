@@ -6,6 +6,7 @@ use Buttercup\Protects\IdentifiesAggregate;
 use Jubjubbird\Respects\AggregateHistory;
 use Jubjubbird\Respects\AggregateRoot;
 use Jubjubbird\Respects\ApplyCallsWhenMethod;
+use Jubjubbird\Respects\RecordsEvents;
 use Jubjubbird\Respects\RecordsEventsForBusinessMethods;
 
 class Basket implements AggregateRoot
@@ -27,7 +28,7 @@ class Basket implements AggregateRoot
         return $basket;
     }
 
-    public static function reconstituteFrom(AggregateHistory $aggregateHistory)
+    public static function reconstituteFrom(AggregateHistory $aggregateHistory): RecordsEvents
     {
         $customer = new self(BasketId::fromString(strval($aggregateHistory->getAggregateId())));
         foreach ($aggregateHistory as $event) {

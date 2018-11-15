@@ -7,7 +7,6 @@
 namespace Buttercup\Protects\Tests;
 
 use Buttercup\Protects\IdentifiesAggregate;
-use Buttercup\Protects\RecordsEvents;
 use Buttercup\Protects\Tests\Misc\ProductId;
 use DateTimeImmutable;
 use DateTimeZone;
@@ -16,6 +15,7 @@ use Jubjubbird\Respects\AggregateHistory;
 use Jubjubbird\Respects\DomainEvents;
 use Jubjubbird\Respects\IsEventSourced;
 use Jubjubbird\Respects\RecordedEvent;
+use Jubjubbird\Respects\RecordsEvents;
 use Jubjubbird\Respects\Serializable;
 use function Verraes\ClassFunctions\short;
 
@@ -49,7 +49,7 @@ final class BasketV4 implements RecordsEvents, IsEventSourced
      * @param AggregateHistory $aggregateHistory
      * @return RecordsEvents
      */
-    public static function reconstituteFrom(AggregateHistory $aggregateHistory)
+    public static function reconstituteFrom(AggregateHistory $aggregateHistory): RecordsEvents
     {
         // `AggregateHistory` is a list of chronological `DomainEvents` for a single Aggregate instance. Let's start by
         // fetching its identifier.

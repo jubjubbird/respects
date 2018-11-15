@@ -2,13 +2,11 @@
 // As we will have multiple `Basket` instances in our system, we'll want to collect them in an AggregateRepository.
 namespace Buttercup\Protects\Tests;
 
-use Buttercup\Protects\AggregateRoot;
-use Buttercup\Protects\AggregateRepository;
 use Buttercup\Protects\IdentifiesAggregate;
-use Buttercup\Protects\RecordsEvents;
 use Buttercup\Protects\Tests\Misc\ProductId;
+use Jubjubbird\Respects\RecordsEvents;
 
-final class BasketRepository implements AggregateRepository
+final class BasketRepository
 {
     private $eventStore;
 
