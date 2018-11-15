@@ -6,7 +6,7 @@ use Buttercup\Protects\IdentifiesAggregate;
 use DateTimeInterface;
 
 /**
- * A wrapper around a plain domain event that captures the timestamp of its occurrence and theID of the emitting
+ * A wrapper around a plain domain event that captures the timestamp of its occurrence and the ID of the emitting
  * aggregate. The wrapped event becomes the “payload” of this instance.
  */
 class RecordedEvent implements DomainEvent
