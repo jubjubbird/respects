@@ -11,15 +11,17 @@ use DateTimeInterface;
 interface DomainEvent
 {
     /**
-     * The Aggregate this event belongs to.
-     * @return IdentifiesAggregate
+     * @return IdentifiesAggregate The Aggregate this event belongs to.
      */
-    public function getAggregateId();
+    public function getAggregateId(): IdentifiesAggregate;
 
+    /**
+     * @return Serializable The wrapped event data/
+     */
     public function getPayload(): Serializable;
 
     /**
-     * @return DateTimeInterface
+     * @return DateTimeInterface When the event was recorded.
      */
     public function getRecordedOn(): DateTimeInterface;
 }

@@ -40,9 +40,8 @@ trait RecordsEventsForBusinessMethods
     /**
      * The trait ApplyCallWhenMethod may be used instead of implementing this method.
      * @param DomainEvent $event
-     * @return mixed
      */
-    abstract protected function apply(DomainEvent $event);
+    abstract protected function apply(DomainEvent $event): void;
 
     /**
      * Records the first occurrence of this event from the method that caused it.

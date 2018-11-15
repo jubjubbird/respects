@@ -128,7 +128,7 @@ final class BasketV4 implements RecordsEvents, IsEventSourced
     /**
      * @return IdentifiesAggregate
      */
-    public function getAggregateId()
+    public function getAggregateId(): IdentifiesAggregate
     {
         return $this->basketId;
     }
@@ -165,8 +165,8 @@ final class BasketV4 implements RecordsEvents, IsEventSourced
     private function productIsInBasket(ProductId $productId) { return array_key_exists((string) $productId, $this->products) && $this->products[(string)$productId] > 0; }
     private function guardProductLimit() { if ($this->productCount >= 3) { throw new BasketLimitReached; } }
     private function __construct(BasketId $basketId) { $this->basketId = $basketId; }
-    public function getRecordedEvents() { return new DomainEvents($this->latestRecordedEvents); }
-    public function clearRecordedEvents() { $this->latestRecordedEvents = []; }
+    public function getRecordedEvents(): DomainEvents { return new DomainEvents($this->latestRecordedEvents); }
+    public function clearRecordedEvents(): void { $this->latestRecordedEvents = []; }
 
 }
 

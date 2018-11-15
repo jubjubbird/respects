@@ -34,7 +34,7 @@ class AggregateHistory extends DomainEvents
     /**
      * @return IdentifiesAggregate
      */
-    public function getAggregateId()
+    public function getAggregateId(): IdentifiesAggregate
     {
         return $this->aggregateId;
     }

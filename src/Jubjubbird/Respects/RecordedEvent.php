@@ -34,7 +34,7 @@ class RecordedEvent implements DomainEvent
      * The Aggregate this event belongs to.
      * @return IdentifiesAggregate
      */
-    public function getAggregateId()
+    public function getAggregateId(): IdentifiesAggregate
     {
         return $this->aggregateId;
     }

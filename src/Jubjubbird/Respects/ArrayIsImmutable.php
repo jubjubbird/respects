@@ -6,5 +6,4 @@ use BadMethodCallException;
 
 class ArrayIsImmutable extends BadMethodCallException
 {
-
 }

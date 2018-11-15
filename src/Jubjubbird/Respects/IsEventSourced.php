@@ -18,5 +18,5 @@ interface IsEventSourced
     /**
      * @return IdentifiesAggregate
      */
-    public function getAggregateId();
+    public function getAggregateId(): IdentifiesAggregate;
 }
